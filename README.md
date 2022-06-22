@@ -33,35 +33,49 @@
 # 使用说明
 
 ### 首先来介绍一下对象api:
-    connectionSQL内置了基本查询方法
+    查询方法
         select  (查询)
         inset   (插入)
         update  (更新)
         delete  (删除)
-    还包括事务对象
+    事务对象
         services
+    配置方法
+        config  (数据库信息)
+        creatPool (连接池)
+        creaConnection (普通连接)
 
 ### 基本的使用:
-    在基本查询方法的使用时都需要传入两个参数 一个查询条件 一个回调函数。
     
-    connectionSQl.方法(查询条件,回调函数(返回值,报错)=>{})
+#### 在基本查询方法的使用时都需要传入两个参数 一个查询条件 一个回调函数 以下是简单的构造：
+    
+    connectionSQl.方法(查询条件,回调函数(返回值,报错)=>{ 代码块 })
 
-    查询条件必须为对象格式 我推荐在外部创建一个变量来设置查询的条件然后将其引用，这样代码好看些。
-
-    回调函数可以使用箭头函数传入，需要接受两个参数
+##### 查询条件必须为对象格式 我推荐在外部创建一个变量来设置查询的条件然后将其引用，这样代码好看些
+#### 回调函数可以使用箭头函数传入，需要接受两个参数：
         result => 返回值
             返回值有个固定属性 select => 查询语句，这个属性会把最终的sql语句返回出来供调整。
             其他属性会更具查询类型不同而改变
         error => 报错
             这个就是报错 会截取sql报错中的重要部分返回
 
-        下面是一个简单的实例
+#### 下面是一个简单的实例 
+        // 查询 user 表中所有的数据并打印
         let select={    
             table:"user"
         }
-        connectionSQL.select(select,(result,error)=>{})
+        connectionSQL.select(select,(result,error)=>{
+            if(error)
+            {   
+                console.log(error) 
+            }else if(result){
+                console.log(error);
+            }
+        })  
     
-        我想分享一个小技巧 就是可以在查询条件中使用es6的模板语法，一下一个简单实列
+#### 我想分享一个小技巧 就是可以在查询条件中使用es6的模板语法，一下一个简单实列
+
+        // 将表中 name 为包匪的数据改为船长
         let old_data = {
             name:"包匪"
         }
@@ -76,8 +90,10 @@
             value:`"${new_data.name}"`,
             where:`name="${old_data.name}"`
         }
+    
+        connectionSQL.update(update,(result,error)=>{})
 
-        但是还是要注意字符串类型的数据需要被双引号包裹 以后说不定会加以改进
+#### 但是还是要注意字符串类型的数据需要被双引号包裹 以后说不定会加以改进
 
 ### 返回值:
     返回值是将查询结果进行抽取，包装然后返回吗，基本构成如下
@@ -130,7 +146,7 @@
 ### 引入:
     const connection = require("connectionSQL");
 
-### 配置:
+### 配置(中间件):
     // connection的配置
     const local = {
         host: "localhost", // 连接地址
@@ -143,10 +159,12 @@
     // 配置connectionSQL
     apply.use( connection.config(local) );
 
-### 设置连接类型:
-    // 连接池
+### 设置连接类型(中间件):
+    // 只需要设置一次 不会影响到其他方法的使用
+
+    // 所有连接类型为连接池
     apply.use( connection.createPool() )
-    // 普通连接 
+    // 所有连接类型为普通连接 
     apply.use( connection.creatConnection() )
 
 ## 基本方法:
