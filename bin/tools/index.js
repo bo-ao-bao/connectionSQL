@@ -12,6 +12,8 @@
  exports.parseData =  function parseData(type, re, err,pair, callback) {
         // 初始化返回值
         let result = {};
+            result.data = [];
+
         let error = "";
         // 保留原本的结果
         // result.results = JSON.parse(JSON.stringify(re));
@@ -21,12 +23,14 @@
         } else if (re.length == 0) {    //不存在数据
             result.data = null;
         } else if (re.length == 1) {    // 只有一条数据
-            result.data = {};
-            for (let key in re[0]) {
-                result.data[key] = re[0][key];
-            }
+            // result.data = {};
+            // for (let key in re[0]) {
+            //     result.data[key] = re[0][key];
+            // }
+
+            result.data[0] = re[0];
+
         } else if (re.length > 1) {     // 多条数据
-            result.data = [];
             for (let key of JSON.parse(JSON.stringify(re))) {
                 result.data.push(key);
             }
