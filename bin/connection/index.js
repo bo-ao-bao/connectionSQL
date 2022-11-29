@@ -23,7 +23,7 @@ class connection {
 
         _connection = mysql.createPool(config.getConfig());
 
-        if (callback) callback();
+        callback && callback();
 
         return function (req,res,next){
             return next()
@@ -39,7 +39,7 @@ class connection {
 
         _connection = mysql.createConnection(config.getConfig());
 
-        if (callback) callback();
+        callback && callback();
 
         return function (req,res,next){
             return next()

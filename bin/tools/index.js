@@ -2,14 +2,14 @@
  * 工具类 用于整理使用者输入的 sql 语句
  * */
 
-    /**
+/**
      * 解析数据并传入回调函数
      * @param {String} type
      * @param {Result} re
      * @param {Error} err
      * @param {function} callback
      * */
- exports.parseData =  function parseData(type, re, err,pair, callback) {
+ exports.parseData =  function (type, re, err,pair, callback) {
         // 初始化返回值
         let result = {};
             result.data = [];

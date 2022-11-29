@@ -135,7 +135,7 @@ class splice {
     /**
      * 拼接 limit 设置分页查询
      * @param {Object} limit
-     * @returns {String}
+     * @return {String}
      * */
     limit(limit){
         return `LIMIT ${limit.start || ""} ${limit.length || ""} ${limit.end || ""}`
@@ -146,23 +146,24 @@ class splice {
      * @return {Object} 整理完的语句
      * */
     reorganize(query = {}) {
-        if (query.query) {
-            query.query = this.query(query.query);
-        }
-        if (query.table) {
-            query.table = this.table(query.table);
-        }
-        if (query.data) {
-            query.data = this.data(query.data);
-        }
-        if (query.where) {
-            query.where = this.where(query.where);
-        }
-        if (query.limit){
-            query.limit = this.limit(query.limit);
-        }
 
-        return query;
+            if (query.query) {
+                query.query = this.query(query.query);
+            }
+            if (query.table) {
+                query.table = this.table(query.table);
+            }
+            if (query.data) {
+                query.data = this.data(query.data);
+            }
+            if (query.where) {
+                query.where = this.where(query.where);
+            }
+            if (query.limit) {
+                query.limit = this.limit(query.limit);
+            }
+
+            return query;
 
     }
 
